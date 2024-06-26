@@ -1,5 +1,7 @@
 package lucadipietro.U5_W2_D3.services;
 
+import lucadipietro.U5_W2_D3.controllers.BlogPostPayLoad;
+import lucadipietro.U5_W2_D3.entities.Autore;
 import lucadipietro.U5_W2_D3.entities.BlogPost;
 import lucadipietro.U5_W2_D3.exceptions.BadRequestException;
 import lucadipietro.U5_W2_D3.exceptions.NotFoundException;
@@ -18,6 +20,8 @@ import java.util.UUID;
 public class BlogPostsService {
     @Autowired
     private BlogPostsRepository blogPostsRepository;
+    @Autowired
+    private AutoriService autoriService;
 
     Random rnd = new Random();
 
@@ -27,14 +31,15 @@ public class BlogPostsService {
         return blogPostsRepository.findAll(pageable);
     }
 
-    public BlogPost save(BlogPost newBlogPost){
+    public BlogPost save(BlogPostPayLoad newBlogPost){
         this.blogPostsRepository.findByTitolo(newBlogPost.getTitolo()).ifPresent(
                 blogPost -> {
                     throw new BadRequestException("Esiste già un post con questo titolo " + newBlogPost.getTitolo());
                 }
         );
-        newBlogPost.setCover("https://picsum.photos/" + rnd.nextInt(1,300) + "/" + rnd.nextInt(1,300));
-        return blogPostsRepository.save(newBlogPost);
+        Autore autore = autoriService.findById(newBlogPost.getAutoreId());
+        BlogPost newPost = new BlogPost(newBlogPost.getCategoria(),newBlogPost.getTitolo(),newBlogPost.getContenuto(),newBlogPost.getTempoDiLettura(),autore);
+        return this.blogPostsRepository.save(newPost);
     }
 
     public BlogPost findById(UUID blogPostId) {

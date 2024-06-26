@@ -12,7 +12,6 @@ import java.util.UUID;
 public class BlogPostPayLoad {
     private String categoria;
     private String titolo;
-    private String cover;
     private String contenuto;
     private int tempoDiLettura;
     private UUID autoreId;
