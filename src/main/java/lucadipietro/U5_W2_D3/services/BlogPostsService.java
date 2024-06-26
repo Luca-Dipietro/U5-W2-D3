@@ -34,7 +34,6 @@ public class BlogPostsService {
                 }
         );
         newBlogPost.setCover("https://picsum.photos/" + rnd.nextInt(1,300) + "/" + rnd.nextInt(1,300));
-        newBlogPost.setTempoDiLettura(rnd.nextInt(1,30));
         return blogPostsRepository.save(newBlogPost);
     }
 
@@ -48,7 +47,8 @@ public class BlogPostsService {
         found.setTitolo(updateBlogPost.getTitolo());
         found.setCover("https://picsum.photos/" + rnd.nextInt(1,300) + "/" + rnd.nextInt(1,300));
         found.setContenuto(updateBlogPost.getContenuto());
-        found.setTempoDiLettura(rnd.nextInt(1,30));
+        found.setTempoDiLettura(updateBlogPost.getTempoDiLettura());
+        found.setAutore(updateBlogPost.getAutore());
         return blogPostsRepository.save(found);
     }
 

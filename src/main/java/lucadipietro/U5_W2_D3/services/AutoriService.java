@@ -23,7 +23,7 @@ public class AutoriService {
     Random rnd = new Random();
 
     public Page<Autore> getBlogPosts(int pageNumber, int pageSize, String sortBy){
-        if(pageSize > 100) pageSize = 100;
+        if(pageSize > 50) pageSize = 50;
         Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
         return autoriRepository.findAll(pageable);
     }
@@ -34,7 +34,6 @@ public class AutoriService {
                     throw new BadRequestException("L'email " + newAutore.getEmail() + " è già in uso!");
                 }
         );
-        newAutore.setDataDiNascita(LocalDate.of(rnd.nextInt(1980,2006),rnd.nextInt(1,12), rnd.nextInt(1,31)));
         newAutore.setAvatar("https://ui-avatars.com/api/?name=" + newAutore.getNome() + "+" + newAutore.getCognome());
         return autoriRepository.save(newAutore);
     }
@@ -48,7 +47,7 @@ public class AutoriService {
         found.setNome(updateAutore.getNome());
         found.setCognome(updateAutore.getCognome());
         found.setEmail(updateAutore.getEmail());
-        found.setDataDiNascita(LocalDate.of(rnd.nextInt(1980,2006),rnd.nextInt(1,12), rnd.nextInt(1,31)));
+        found.setDataDiNascita(updateAutore.getDataDiNascita());
         found.setAvatar("https://ui-avatars.com/api/?name=" + updateAutore.getNome() + "+" + updateAutore.getCognome());
         return autoriRepository.save(found);
     }
